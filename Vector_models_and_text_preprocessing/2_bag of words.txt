@@ -1,0 +1,24 @@
+El concepto de bag of words implica que, para algunos modelos de ML (de hecho la gram mayoría) el contexto
+no se tiene en cuenta a la hora de trabajar con el texto. Es decir que frases como: 
+
+-dog toy 
+-toy dog
+
+Serán vectores con la misma posición cuando, en realidad, sabemos que uno es un juguete para un animal doméstico
+y el otro un juguete con al forma de dicho animal. 
+
+Si bien los modelos probabilísticos y los modelos de deep learning en genral no utilizan esta aproximación en algunos casos
+los primeros si que lo hacen. 
+
+Ententendemos entonces que el bag of words es una manera de aproximarse hacia el texto que se va a procesar, 
+esta manera no tiene en cuenta el contexto y toma los tokens como entidades individuales en forma secuencial.
+El lenguaje mismo, si bien es secuencial, se vale de la alteración de la secuencia de elementos idénticos (contexto)
+para hacer cambios en el significado. Esto ocurre mucho en inglés pero también es posible en español.
+
+-pobre hombre
+-hombre pobre
+
+SI bien no se tiene el contexto en cuenta, esta aproximación se ha demostrado bastante eficaz en varios casos. 
+
+
+

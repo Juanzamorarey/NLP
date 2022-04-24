@@ -1,0 +1,146 @@
+Como recordamos al utilizar vecotres con la aproximación del bag of words encontrábamos que palabras similares tales como
+corredor o correr se correspondían a dos vectores completamente diferentes. Esto aumentaba las dimensiones de nuestros
+vectores.
+
+Una solución a este problema es la búsqueda del "root" de la palabra, es decir, para eta lista:
+
+-Corredor, correr, carrera, corrí, corríamos...
+
+extraer el lexema o palabra inicial de manera que, siempre que aparezca en el documento el vector será el mismo: correr
+
+Dos técnicas utilixadas a tal fin son el stemming y la lemmatization. 
+
+STEMMING
+
+El stemming es una técnica poco utilizada actualmente que consiste en cortar la palabra eliminando segmentos como prefijos
+, sufijos o infijos tratando de obtener el lexema. Por ejemplo un stemmer podría obtener los siguientes resultados:
+
+corredor --> corr-e-dor --> ROOT -> corr
+
+corredora --> corr-e-dor-a --> ROOT -> corr
+
+correr --> corr-er --> ROOT -> corr
+
+Pero ¿qué pasaría si pasamos por ejemplo "carrera"?. Además de los posibles errores es importante remarcar que algunos de los
+roots obtenidos (si no la mayoría) no son realmente palabras. 
+
+Un stemmer clásico de NLTK es el stemmer de porter, un algoritmo presente en la librería nltk, aquí un ejemplo:
+
+    from nltk.stem import PorterStemmer
+
+    porter = PorterStemmer()
+
+    porter.steam("corredor") #returns corr
+
+LEMMATIZATION 
+Es un proceso más sofisticado que parte de una base de datos con co9nocimiento heurístico.
+
+Así palabras en inglés como "was" o "is" tienen su root en "be", un stemmer jamás podría establecer esta conexión 
+mientras que un lemmatizer sí puesto que está implementado a tal fin. en general el stemmer ha caído en desuso 
+frente al loemmatizer pero recordemos que dependiendo de nuestro objetivo un stemmer puede ser también útil. 
+
+Para utilizar el lemmatizer se necesita un DB, es importante recordar esto porque el código no funcionará
+si esto no está incluido. 
+
+nltk.download("wordnet")
+
+Algunas librerías que emplean lemmatization son: spacy o NLTK:
+
+    from nltk.stem import lemmatizer
+    from nltk.corpus import wordnet
+
+    nltk.download("wordnet")
+
+    lemmaitzer = WordNetLemmaitzer()
+    lemmatizer.lematize("mice") # returns mouse
+
+Algo importante a mencionar aquí es que los lemmatizers no son perfectos y a veces requieren un poco de ayuda a partir del 
+POS, part of speech tagging. Esto indica al lemmatizer que tipo de palabra es la que se está analizando de modo que pueda 
+actuar de forma correcta. A continuación un ejemplo en inglés
+
+    lemmatizer.lematize("going") # returns going
+
+    lemmatizer.lematize("going", pos=wordnet.VERB) # returns go
+
+En el segundo caso hemos indicado que se trata de un verbo. Es por lo tanto muy recomendable hacer uso del POS aunque no esté
+estrictamente requerido. Esto es así porque a veces una misma palabra en contextos diferentes puede tener diferentes 
+categorías gramáticales, especialmente en inglés donde existe mayor ambigüedad.
+
+    -Donald Trump has devoted following
+
+    -The cat was following the bird
+
+Algo importante una vez visto esto es mencionar que, si bien NLTK puede hacer POS necesario para un correcto funcionamiento
+del lemmatizer, los resultados de este POS no se pueden utilizar con el lemmatizer wordnet. Veremos por tanto una función
+que nos ayuda a mapear las etiquetas de un formato al otro.
+
+El POS de NLTK por lo tanto devolverá las categorías en esta forma:
+J -> adjetivo
+N - > Nombre
+V -> Verbo
+R-> Adverbio
+
+Por lo tanto podemos crear una sencilla función que, mirando este POS lo convierta al POS que podemos pasar al lemmatizer. recordemos
+también que el lemmatizer wordnet funciona mejor con nombres asi que, en el caso de que una palabra no se corresponda con 
+ninguna delas categorías anteriores la introduciremos al lemmatizer como nombre. 
+
+def get_pos_for_wordnet(treebank_tag):
+    if treebank_tag.startswith("J"):
+        return wordnet.ADJ
+    elif treebank_tag.startswith("V"):
+        return wordnet.VERB
+    elif treebank_tag.startswith("N"):
+        return wordnet.NOUN
+    elif treebank_tag.startswith("R"):
+        return wordnet.ADV
+    else:
+        return wordnet.NOUN
+
+Una vez tenemos nuestra función preparada tenemos que traer la BBDD con el etiquetador correcto. en este caso es el siguiente:
+
+    nltk.download("averaged_perceptron_tagger")
+
+Una vez tengamos esto ya tendremos el POS para procesar textos. 
+
+imginemos que queremos lematizar la frase:
+
+    frase = "Donald Trump has a devoted following"
+
+para ello deberíamos primero tokenizar la frase:
+
+    frase.split()
+
+y pasarla por el POS que hemos descargado: 
+
+    palabras_y_etiquetas = nltk.pos_tag(frase)
+
+Ahora la variable palabras_y_etiquetas contendrá una lista con tuplas en las que aparecerá el par (palabra, etiqueta).
+Con esta información ya podemos pasar nuestro lemmatizer. Fijémonos en que la función que hemos realizado previamente 
+se aplica para darnos el tag correcto para el lemmatizer. 
+
+    frase_de_lemas = []
+    for palabra, etiqueta in palabras_y_etiquetas:
+        lemma = lemmatizer.lemmatize(word, pos=get_pos_for_wordnet(etiqueta))
+        #frase_de_lemas.append(lemma)
+        print(lemma, end= " ")
+    #print(frase_de_lemas)
+
+Así al ver la frase_lematizada encontraremos lo siguiente: 
+
+    Donald Trump have a devote following
+
+hemos sacado por tanto los lemmas de has - > have y de devoted -> devote
+
+Si ejecutáramos el mismo proceso sobre esta frase: 
+
+    The cat is following the bird as it flew by
+
+obtendríamos esto: 
+
+    The cat be follow the bird a it fly by
+
+Por lo tanto vemos como el lemmatizer obtiene un mejor resultado consiguiendo que por ejemplo la palabra "follow" 
+sea lemmatizada correctamente gracias a su categoría gramatical. 
+
+Algunos usos de estas técnicas vienen en motores de búsqueda, compañías para anuncios o incluso recuperación de ifnromación
+de documentos. 

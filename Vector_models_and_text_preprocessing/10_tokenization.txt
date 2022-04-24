@@ -1,0 +1,45 @@
+El proceso de tokenización normalmente se hace de manera automática por muchas de las 
+librerías que usamos hoy en dia. Sin embargo algunos tokenizadores no toman en cuenta ciertos
+tokens que pueden resultar relevantes. Por ejemplo en sciKitLearn no se tiene en cuenta la punuación
+pero en estas dos frases la puntuación indica un cambio radical de significado.
+
+-I hate cats. 
+-I hate cats?
+
+Esto es importante porque en sentiment analysis por ejemplo deberemos tener en cuenta estas diferencias. 
+Si quisiéramos que el modelo apreciara estas diferencias deberíamos, como siempre en ML, proporcionarle mas ejemplos 
+de estos contextos con sus respectivas etiquetas de diferencia pero esto aumenta la dimensionalidad y por tanto
+los datos requeridos. 
+
+Algo también importante es si el modelo será "Case sensitive o case Insensitive", es decir, si diferenciará mayúsuclas 
+de no mayúsuclas. Una manera de solucionar esto es pasar el string a lowercase. sciKitLearn ofrece también una feature
+para que este proceso se haga automático. recordemos que esto no garantiza mejores resultados, dependiendo de nosotros
+el evaluar los resultados a la vista de los parámetros introducidos.
+
+    CountVectorizer(lowercase=True)
+
+Otro problema son los acentos. En español a veces son cruciales. Para ello puedes o mapear los acentos tu mismo o 
+establecer el parametro del CountVectorizer a True para quitarlos, None para dejarlos y False 
+
+    CountVectorizer(strip_accents=True)
+
+Otro tema que sale a la palestra cuando hablamos de tokenización es si hacerlo basado en palabras o basado en caracteres. 
+Ambas maneras tienen pros y contras. Un modelo basado en palabras probablemten ocupará mucha memoria puesto que cualquier idioma
+tiene facilmente más de un millon de palabra en su vocabulario, pero estas contienen más información que los caracteres individuales.
+Por otro lado el uso de caracteres reduce, por ejemplo en inglés, a 26 el número de posibilidades, a las que luego añadiríamos 
+algunso caracteres mas tales como espacios, comillas, puntos... el modelo ocupará mucha menos memoria pero, evidentemente será
+más difícil establecer relaciones entre la información que contienen. 
+
+Otra opción, y una de las mas utilizadas, es el subword tokenization. Utilizando los morfemas y flexiones de las palabras. 
+es decir la palabra "walking" se divide en "walk" y el sufijo flexivo de gerundio "ing". cada uno con su información
+separada. Esto es interesante puesto que la aproximación del bag of words toma tan cercanas "walk" y "walking" como "walk" 
+y "tree" cuando en el segundo caso no hay ninguna relación. Dependemos de los datos de entrenamiento apra que el modelo entienda
+la relación entre "walk" y "walking". Si bien esta forma de tokenización es interesante no la utilizaremos hasta el apartado de deep learning 
+y transformers. 
+
+sciKitLearn nos permite usar los dos primeros indicandolo con el parametro analyzer
+
+    CountVectorizer(analyzer="word") --> tokenizador por palabras
+
+    CountVectorizer(analyzer="char") --> tokenizador por caracteres
+

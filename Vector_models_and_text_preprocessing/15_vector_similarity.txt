@@ -1,0 +1,71 @@
+El concepto de similaridad de vectores nace a una idea muy simple.
+
+Recibir 2 vectores, introducirlos en una función y obtener un score de su similaridad.
+
+¿por qué es útil? la similaridad de vectores nos permite por ejemplo establecer qué documento es similar a otro 
+a partir de un vector. Podemos hacer lo mismo a partir de palabras imaginando que hemos mapeado las palabras de un 
+texto en vectores. 
+
+De esta manera podríamos ver si king and queen son similares o incluso podríamos reescribir un artículo a partir de 
+encontrar palabras similares a las ya existentes y sustituirlas. Esta aplicación se llama article spinning y es considerada
+una practica poco decorosa. 
+
+La similaridad de vectores se puede ver en el espacio euclidiano de forma mucho más visual. Si introdujeramos 
+dos vectores en el espacio la mayor proximidad diríamos que tienen mayor similaridad y a mayor distancia menor similitud. 
+
+|
+|
+|    A
+|       C
+|       
+|    B
+|   
+|______________________________
+
+En esta gráfica podríamos decir que las palabras A y C tienen mayor similitud que las palabras A y B. recordemos que estos
+puntos son vectores en el espacio. La distancia se puede medir de varias maneras: usando la distancia euclidiana o 
+inlcuso el coseno del ángulo resultante de dibujar dos rectas desde el punto 0, 0 que pasen por los respectivos vectores. 
+La manera de medir la distancia entre dos vectores recibe el nombre de COSINE SIMILARITY.
+
+|       /    / 
+|      /    /
+|     /    /
+|    /   /
+|   /   /
+|  /  /
+| / /
+|//______________________________
+
+Suponiendo que en nuestro ejemplo las dos linea fueran rectas el ángulo que forman entre ellas al dividirse desde el eje.
+¿Por qué esto funciona? porque dos funciones que sean muy similares serán dos rectas que tienen a ser paralelas en el plano
+por lo que el ángulo resultante entre ellas será más pequeño. Si en cambio dos vectores tienen una distancia mayor 
+el ángulo será mayor indicando una mayor distancia entre los dos vectores. En NLP es mucho más utilizada y eficaz 
+el COSINE SIMILARTITY puesto que si hablamos de vectores cercanos aquellas muestras poco representativas de, por ejemplo,
+dos corpus de diferentes disciplina que quisiéramos destacar podrían tener menor distancia euclidiana que una muestra
+muy representativa de un corpus. Para verlo en un ejemplo imaginemos que tenemos 1 corpus de física y biología mezclado
+y queremos separarlo. Para ello nos valemos de la aparición de la palabra célula y voltaje, siendo cada una más propia de
+su repsectivo campo. Al dibujar nuestros datos encontramos 3 artículos que presentan estas características:
+
+A -> contiene célula 1500 veces (biología)
+
+B- > Contiene célula 120 veces (biología)
+
+C -> Contiene voltaje 100 veces (física)
+
+            |      
+Biología    | A
+            |  
+            |  
+            |   
+            |  
+            | B
+            |__ C______________________________
+                                            Física
+
+La distancia euclidiana entre B y C es menor que la distancia entre B y A aunque A y B pertenecen al mismo tipo de documento.
+Sin embargo si aplicáramos la COSINE SIMILARITY tendríamos que realizar las recta y ver los ángulos. Al hacerlo apreciarí-
+amos que el ángulo que forman B y C es mucho más abierto y por tanto con un valor muy superio, al ángulo que forman las rectas 
+entre A y B. 
+
+Es por este motivo que el COSINE SIMILARITY es utilizado más habitualmente en NLP aunque existen también casos en los que 
+ambos métodos de similaridad de vectores son aplicables.  

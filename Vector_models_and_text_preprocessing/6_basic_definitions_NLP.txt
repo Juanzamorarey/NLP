@@ -1,0 +1,20 @@
+EL curso se enfoca en inglés
+
+Sentence -> sequence of wrds that starts with capitalizaed words and finish with punctuation
+Tokens -> es toda aquella unidad inicial de la que se compone el lenguaje. 
+Character -> pueden ser letras, punctuacion...
+
+Vocabulary -> este es el set de todas las palabras que forman un idioma
+En ML normalmente se usa una cantidad razonable dde estas palabras y no todas.
+Si se usa un modelo pre etiquetado no hay otra opción que lo que está ya etiquetado.
+
+Corpus -> en ML se refiere al dataset
+
+n-Gram -> Se refiere a n consecutivos items (la gramátca)
+de este modo si tenemos solo 1 token sera un 1-gram 
+si tenemos dos tokens 2-gram si tenemos 3 3-gram...
+
+Un ejemplo de uso de n-gram es word2vec algorithm que utiliza bigrams (2-grams) para
+crear una neural network. 
+Otro ejemplo sería el Markov models el cual consiste en un bigrama de probabilidades.
+ 

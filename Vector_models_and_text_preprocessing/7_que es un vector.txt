@@ -1,0 +1,25 @@
+Los vectores serán para nosotros la representación numérica del texto y el fundamento del ML.
+
+En general un vector es una cantidad que tiene magnitud y dirección. Por ejemplo
+podríamos decir que la velcoidad es un vector:
+- Voy a 100km hora (magnitud) en dirección a Asturias (dirección)
+
+Que es entonces un vector en un concepto más abstracto. Un vector es el clasico eje de x e y 
+sobre el cual se dibuja una línea que se corresponde a ciertos valores
+en el eje de las x y en el de las Y.
+
+¿Por qué son útiles los vectores?
+
+porque la utilización de palabras aisladas 
+deja pocas alternativas. Es decir si usamos keyWords 
+úncamente para, por ejemplo, filtrar spam y legitimate mail
+la idea se hace complicada puesto que no se tiene en cuenta ningún contexto
+
+Un ejemplo de los que se puede hacer con vectores 
+es el mapeo de entidades para separarlas en un plano cartesiano
+mediante una linea o incuso el clustering, o hacer
+nubes de puntos que recojan por ejempl diferentes docuemntos de un mismo tipo agrupándolos por 
+categorías separadas.
+
+Existen maneras diversas de transformar palabras en vectores que tienen sus pros y contras
+a continuación vamos a ver algunas de ellas. 

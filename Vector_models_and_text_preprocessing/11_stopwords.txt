@@ -1,0 +1,28 @@
+Recordemos que, a partir del metodo de vectorización establecíamos un vector para cada palabra del documento, 
+y a partir de allí la distancia entre los diferentes vectores nos daría un resultado para clasificar documentos.
+
+¿Qué ocurre entonces con palabras como preposiciones, artículos, verbos muy repetidos, etc.? 
+estas palabras aparecerán en casi cualquier documento lo que hará que la proximidad entre documentos que en principio
+son diferentes sea menor, haciendo que el modelo sea menos eficaz. Estas palabras reciben el nombre de "stopwords", es decir,
+son palabras que, por un interés hacia nuestro objetivo, deberíamos omitir. 
+
+¿Cuáles son las ventajas de omitirlas? aparte de la ya mencionada distancia entre vectores, si tuviéramos que transofmrar
+en vectores los documentos con sus stopwords la dimensionalidad se mulitplicaría requeriendo mas memoria de procesamiento.
+Siendo así lo normal en el preprocesado es eliminar estas palabras. Para ello la librería sciKitLearn nos meustra varias
+maneras de hacerlo pero solamente funcionará con inglés o con una lista que le dé el usuario. 
+
+    CountVectorizer(stopwords="english") --> elimina una lista ya definida en la librería de stopwords en inglés
+
+    CountVectorizer(stopwords="list_defined_by_user") --> elimina una lista definida por el usuario
+
+    CountVectorizer(stopwords=None) --> No elimina nada
+
+Una manera más simple de eliminar las stopwords molestas es usando la librería NLTK. Los pasos son sencillos:
+
+import nltk 
+
+nltk.download("stopwords")
+
+from nltk.corpus import stopwords
+
+stopwords.words("spanish")

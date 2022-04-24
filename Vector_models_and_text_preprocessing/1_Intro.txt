@@ -1,0 +1,13 @@
+El objetivo de esta sección será entender el concepto del paso de texto a vectores para que 
+podamos procesar la información de texto con algoritos de ML, los cuales usan matemáticas.
+
+Para ello las sección se va a componer de:
+-Definiciones básicas
+-¿Qué es un vector?
+-Preprocesamiento del texto
+-Vectores de conteo (demo de ML)
+-Limitaciones del término de terminos de frecuencia
+-Construcción de un TF-IDF recomendación system
+-Ejercicio avanzado TF-IDF
+-Embeddings de la técnica bag of words.
+word2vec y GloVe (introducción)

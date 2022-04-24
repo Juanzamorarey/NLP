@@ -1,0 +1,68 @@
+El count vectorizer es un método, el cual si bien no tiene nombre como tal se puede denominar así: count_vectorizer. 
+
+¿Cómo funciona? Imaginemos que tienes unos documentos que quieres clasificar entre su pertenencia al campo de física o 
+biología. Normalmente los documentos vendrán en un formato de datafram en el que tendremos el texto y su etiqueta
+
+TEXTO                                            ETIQUETA 
+Las celulas mitocondrias de Pepe                 biología
+El coche y el roazmiento sobre el asflato        fisica
+...                                              ...
+
+Siendo así el problema 1 es convertir el dato textual de la columna texto a vectores. Lo primero que debemos hacer es 
+ver nuestro vocabulario. 
+
+VOCABULARIO: todas las palabras únicas que aparecen en nuestro corpus
+
+y a partir de ahí crear un vector. Imaginemos un corpus con 3 frases y un vocabulario de 6 palabras
+
+CORPUS                                              VECTORES
+                                    odio        a       los         gatos       perros          y
+odio a los gatos                    1           1       0           1           0               0
+odio a los perros                   1           1       1           0           1               0
+amo a los gatos y a los perros      0           2       2           1           1               1
+
+Voila ahí están nuestros vectores. Para ver el tamaño de nuestro vocabulario solo tendremos que contar el numero de palabras
+únicas que aparecen a lo largo de nuestro corpus. 
+
+Volviendo al ejemplo imaginemos que ya hemos creado nuestros vectores y fijándonos en ciertos keywords como
+micelar (parte de una célula) y gravedad (física) obtenemos en un plano cartesiano una distribución como esta
+
+|  o   /    
+|  oo / y
+|  o /      y
+| o /   y
+|  /    y   z
+| /  y
+|/________________________
+
+Donde o son los artículos de biología e y los artículos de física. Si trazamos una línea que divida las dos nubes de 
+puntos podríamos determinar que, al crear u nuevo vector desde un documento (z) es probable que ese documento pertenezca 
+al tipo de documento de ese lado. (En el ejemplo de arriba z sería un documento de físicas).
+
+Conceptualmente está terminado pero ¿cómo implementar esto en python? 
+Para ello vamos a lidiar con problemas y soluciones
+
+-Una cadena de texto en python es un string por lo que habrá que dividirla para crear el bag of words (tokenización)
+-El número de vectores depende del número de documentos por lo que debemos mapear de alguna manera estos vectores. 
+-En documentos más largos el número de ocurrencias será mayor que en documentos mas cortos aunque sean de la misma
+categoría y eso los alejará en el espacio vectorial. Para solucionar esto podemos normalizar nuestros vectores
+(Normalización), por ejemplo dividiendo cada numero de ocurrencias por el numero total de palabras del documento
+pbteniendo así un número siempre entre 0 y 1. 
+
+Para realizar esta tarea podemos usar varios métodos en python (numPy o sciPy) pero la más sencilla es con la libreria 
+sciKitLearn. ATENCION: CountVectorizer no implementa normalización en este metodo. 
+SI quisiéramos hacerlo así deberíamos usar el método TF-IDF de sciKitLearn que veremos más adelante.
+
+LLamamos un objeto vectorizador 
+
+    vectorizer = CountVectorizer()
+
+Le proporcionamos nuestros datos de entrenamietno y lo transformarmos guardandolo en una variable
+
+    vectorizer.fit(list_of_documents_training)
+    Xtrain = vectorizer.transfrom(list_of_documents_training)
+
+y la tarea estará completada. Esto se puede hacer más eficazmente en un solo paso con el metodo fit_transform: 
+
+Xtrain = vectorizer.fit_transform(list_of_documents_training)
+Xtest = vectorizer.fit_transform(list_of_documents_test)
