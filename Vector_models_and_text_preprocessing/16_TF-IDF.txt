@@ -1,0 +1,63 @@
+¿Qué es TF-IDF? el TF-IDF es un método que nos permite mejorar el conteo de vectores. Se utiliza especialmente en NLP 
+para la recuperación de información de documentos y extracción de textos.
+
+Para empezar a explicar el TF-IDF debemos fijarnos primero en cuál es el error con el Count_Vectorizer. 
+    -Stopwords --> Normalmente en tareas que impliquen recuperación de la información las stopwords serán un problema
+                    puesto que no contienen información útil y pueden llegar a estorbarnos para nuestro objetivos.
+                    Por ejemplo, si intentamos diferenciar spam de legítimo ambos tipos de correo contendrán stopwords. 
+
+        Pero, ¿cómo sabemos qué stopwords debemos borrar y cuáles no?. recordemos que, si bien podemos introducirla de,
+        forma específica requiere de una cantidad de tiempo de la que a lo mejor no disponemos. Debemos por tanto encontrar
+        un conteo ya crado que nos sea útil de cara a la tarea que queremos llevar a cabo. ¿Cómo determinamos cuáles son 
+        importantes y cuáles no?
+
+TF-IDF nos permite rebajar la importancia de los elementos individuales en nuestro conteo de vectores. De este modo si
+queremos que "el" no posea un peso infinitamente mayor a una palabra relevante para detectar el topic de un texto a pesar 
+de aparecer muchísimas veces más Tf-IDF nos puede ayudar a solucionar este problema. 
+
+TF - IDF -> Term Frequency - Inverse Document Frequency
+
+TF-IDF = Term Frquency/ Document Frequency
+
+¿Qué significa esto? que si por ejemplo tuviéramos un corpus de Derecho y la palabra "el" aparece 300 veces a lo largo de
+los documentos y 40 a lo largo de nuestro texto para el conteo de este elemento en particular "el" se rebajará la influencia 
+de este vector sobre el resultado final mediante la división antes mencionada.
+
+IMPORTANTE --> Este no es el resultado final pero nos ayuda a entender qué está pasando en un TF-IDF
+
+En un resultado final dividiríamos el número total de documentos por el número total de doumentos que contienen 
+la palabra. De esta manera obtendríamos el número proporcionado y para obtener el inverso aplicaríamos el logaritmo.
+¿Por qué introducimos el log? porque el logaritmo reduce valores muy grandes haciendo que el modelo sea 
+más manejable. 
+
+¿Cómo se implementa esto en código?
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+tfidf = TfidfVectorizer()
+X_train = tfidf.fit_transform(train_texts)
+X_test = tfidf.transform(test_texts)
+
+--> Los argumentos existen al igual que en el CountVectorizer para tokenizar, stopwords, etc. 
+
+Por lo tanto podemos decir que el TF-IDF se vale de dos términos la frecuencia de una palabra y el inversio de la frecuencia de documentos
+Vamos a ver ahora diferntes variantes de estos dos términos: 
+
+Variaciones de la frecuencia de términos: 
+    --> Representarlos usando valores binarios
+    --> Normalizar la cuenta dividiendo la suma entre el número total de documentos. (normlamente es el estandar)
+        Este método nos devolverá la proporción de veces que la palabra aparece en los documentos. 
+    --> Usar el logaritmo de 1 + el conteo total. Esto reduce los valores extremos. 
+
+Variaciones del inverso de la frecuencia de documentos
+
+    --> smooth IDF. En este método añádimos un +1 al denominador y a la cuenta final eliminando la posibilidad de obtener 0.
+    ¿por qué no queremos obtener 0? porque las cuentas posteriores en el código pueden hacer que un 0 acabe en el denominador,
+    evidentemente esto no es deseable. 
+
+    --> IDF max. EN este método obtenemos el ratio de la palabra para el documento en vez ed tenerlo para todo el dataset.
+
+    --> Probabilistic IDF. En este utilizamos N directamente en el numerador. 
+
+Un método conjunto que podemos aplicar al TF-IDf es la normalizaciónde los vectores. Esto se puede implementar 
+de forma sencilla en sklearn poniendo el parametro norm a "l1" o "l2". El "l2" es el valor por defecto. 
