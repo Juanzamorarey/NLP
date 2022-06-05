@@ -33,6 +33,7 @@ from nltk.corpus import wordnet
 # nltk.download("wordnet")
 # nltk.download("punkt")
 # nltk.download("averaged_perceptron_tagger")
+# Se comenta para no cargarlas cada vez
 
 doc = "documents_for_course/bbc_text_cls.csv"
 
@@ -76,7 +77,7 @@ etiquetas.hist(figsize=(10,5))
 textos_train, textos_test, Ytrain, Ytest = train_test_split(textos, etiquetas, random_state=123)
 
 # De momento como estamos en los primeros pasos usaremos el countVectorizer vacío pero recordemos que esta
-# instanciación posee múltiples argumetnos que podemos pasar para mejorar las predicciones de nuestro modelo.
+# instanciación posee múltiples parametros que podemos pasar para mejorar las predicciones de nuestro modelo.
 
 vectorizer = CountVectorizer()
 
@@ -93,7 +94,7 @@ Xtest = vectorizer.transform(textos_test)
 # contiene filas y columnas con el número de apariciones de cada palabra. Si intentáramos hacer un print de Xtrain 
 # veríamos que se trata de un sparse matrix ¿por qué? porque la mayoría de números presente son 0. Además veríamos 
 # que la matriz tiene unas dimensiones de 1668x26287. Esto en principio debería alarmarnos ya que en Ml normalmente
-#  lo deseable es tener más filas que columnas ya que si o la dimensionalidad del modelo es muy grande. En este caso
+#  lo deseable es tener más filas que columnas ya que si no la dimensionalidad del modelo es muy grande. En este caso
 # en cambio lo tomaremos como algo deseable.
 # 
 # 
@@ -131,7 +132,7 @@ print("test_scores_no_stopwords: ", modelo.score(Xtest,Ytest))
 
 # Como vemos hemos subido un poco el accuracy en test (aproximadamente un 0.005%)
 
-# Y si aplicáramos lematizaciones a este modelo. Para ello vamos a crear una función y una clase que nos ayuden a
+# ¿Y si aplicáramos lematizaciones a este modelo?. Para ello vamos a crear una función y una clase que nos ayuden a
 # llevarlo a cabo
 
 def get_pos_for_wordnet(treebank_tag):
@@ -147,7 +148,7 @@ def get_pos_for_wordnet(treebank_tag):
         return wordnet.NOUN
 
 
-# Esta clase creará un objeto que podrá tokenizar y lemmatizar el texto por si sola mediante un objeto
+# Esta clase creará un objeto que podrá tokenizar y lemmatizar el texto por si solo
 class LemmaTokenizer:
     def __init__(self):
         # En la clase creadora introducimos el WordNetLemmatizer

@@ -1,0 +1,65 @@
+Este concepto de word_to_index mapping es necesario para implementar correctamente el TF-IDF
+pero también es necesario si queremos usar técnicas más avanzadas como ML, DL o incluso
+transformers.
+
+¿Por qué es necesario? empecemos por recordar que, hasta ahora, nuestros modelos tomaban vectores
+a partir del conteo dando como resultado un df que tenía un vector correspondiente a cada 
+documento en cada una de sus filas, y una palabra del vocabulario en cada una de sus
+columnas.
+
+¿Pero dónde se colocan realmente las palabras? es decir, ¿qué columna corresponde a cada 
+palabra? Se ordeanan alfabeticamente, por orden de aparición, de frecuencia... 
+
+En esto corresponde el word_index_mapping. Decidir qué columna corresponde a qué palabra. 
+Una manera de llevar esto a cabo podría ser la siguiente 
+
+current_indice = 0
+palabra_indice = {}
+for doc in documents:
+    tokens = word_tokenize(doc) -----> Aquí podemos separarlos de cualqueir manera
+    for token in tokens: ------------> para cada token en tokens 
+    if token not in palabra_indice:--> si el token no está en la matriz se añade
+        palabra_indice[token] = current_indice--------|
+        current_indice+=1------------> actualizamos el indeice correcto.
+
+A partir de esto, y utilizando las fórmulas que hemos visto previamente, podríamos crear nuestro 
+propio count_vectorizer o nuestro propio TF-IDF.
+
+Una cuestión queda pendiente de responder, ¿qué hacemos con las palabras que están en test
+pero no están en training? Ante esto tnemos varias opciones:
+
+- Ignorar estas palabras. En un modelo de ML el entrenamiento se realiza teniendo en consideración
+los datos de entrenamiento por lo que ignorarlas no sería erróneo.
+
+- Asignar un índice especial para palabras que no se habían visto antes. Esta opción es útil para
+casos en los que no se pueden desechar esas palabras. 
+
+- Se podría establecer un límite de ocurrencias para una palabra que, de no ser superado, podría
+situar la palabra en ese índice de palabras no conocidas. De esta manera aunque todas las palabras.
+serían tratadas de la misma manera, nuestro modelo sabría cómo actuar con casos no vistos antes.
+
+
+Respecto al concepto de reverse mapping, es decri, volver del índice a la palabra resulta vital 
+de cara a muchos modelos puesto que, por ejemplo, si una red neuronal trata de predecir la siguiente 
+palabra en una frase respecto a otra palabra dada mediante el entrenamiento en un corpus la red 
+no va a mirar el lenguaje humano, va a intentar predecir el índice que tiene esa palabra. 
+
+El perro azul 
+                -----> RED NEURONAL -----> Intenta predecir 0   1   ?
+ 0   1   2
+
+En este caso la red predice 2 no predice "azul". Tenemos que ser capaces por tanto de 
+a partir del índice obtener la palabra y viceversa.
+
+En otros modelos de ML resulta de vital importancia saber que feature (o palabra) es la más
+representativa y por tanto importante. De este modo el modelo podrá decirnos que, por ejemplo,
+el índice 345 es el índice más representativo, pero si no podemos saber qué palabra es 
+ese índice estamos muy limitados. 
+
+Es por tanto vital poder mapear los índices de nuestro vocabulario y obtener la correspondencia
+de uno a otro. 
+
+
+
+
+

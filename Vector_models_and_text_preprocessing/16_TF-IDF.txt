@@ -6,7 +6,7 @@ Para empezar a explicar el TF-IDF debemos fijarnos primero en cuál es el error 
                     puesto que no contienen información útil y pueden llegar a estorbarnos para nuestro objetivos.
                     Por ejemplo, si intentamos diferenciar spam de legítimo ambos tipos de correo contendrán stopwords. 
 
-        Pero, ¿cómo sabemos qué stopwords debemos borrar y cuáles no?. recordemos que, si bien podemos introducirla de,
+        Pero, ¿cómo sabemos qué stopwords debemos borrar y cuáles no?. recordemos que, si bien podemos introducirlas de,
         forma específica requiere de una cantidad de tiempo de la que a lo mejor no disponemos. Debemos por tanto encontrar
         un conteo ya crado que nos sea útil de cara a la tarea que queremos llevar a cabo. ¿Cómo determinamos cuáles son 
         importantes y cuáles no?
