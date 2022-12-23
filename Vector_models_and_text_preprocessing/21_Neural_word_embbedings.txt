@@ -1,0 +1,91 @@
+Vamos a ver en qué consiste los neural word embbeddings de forma introductoria.
+
+En anteriores lecciones hemos visto cómo convertir documentos enteros a vectores y partir de ahí, realizar predicciones. Para ellos hemos utilizado métodos como el count_vectorizer o el TF-IDF. Ahora
+Vamos a ver el word-embbeddings y el glove. Ambos nos permiten una aproximación diferente a la del bag-of-words en la que no tenemos en cuenta el contexto. 
+¿Cómo funcionan entonces los word-embbedings? podemos decir que, en vez de crear vectores de un documento entero ahora vamos a crear un vector por cada palabra contenida en el texto. 
+Si cada palabra es ahora un vector los documentos serán entonces una serie de vectores (uno por cada palabra). 
+
+¿Por qué es útil que tengamos ahora una serie de vectores en vez de un único vector? porque en ML, DL y estructuras como los Transformers existen modelos secuenciales basados en capas de atención.
+De este modo una secuencia de vectores es más fácilmente adaptable a este tipo de modelos que un vector único por documento. Además, al contrario que en el modelo del bag of words ahora las palabras
+se consideran en su contexto con significado propio. 
+
+Vamos a diferenciar 2 metodos para word embbedings:
+
+Word2Vec (Google)
+
+El principio sobre el que el word embbedings funciona en este modelo es en encontrar el camino en el que los word embbedings son, exactamente, la interpretación correcta de los mismos. 
+¿Para qué puede servirnos esto? para, recibido un input en forma de palabra, realizar una predicción como output sobre si la palabra aparecerá en un determinado contexto. 
+¿Cómo lo realiza?
+
+Imaginemos la siguiente frase:
+
+
+            Luis [cogió una (sartén) para freir] pechugas de pollo
+
+En nuestro ejemplo hemos tomado como contexto una ventana de dos palabras a la izquierda y dos palabras a la derecha, y como palabra "sartén". Las predicciones que deberá realizar nuestra red neuronal serán las siguientes:
+
+
+ 
+ 
+                                               ---------- para --> CORRECTO
+ 
+        --> INPUT -- sartén --> [RED NEURONAL] ---------- freir --> CORRECTO
+ 
+                                               ---------- perro --> ERROR
+
+En nuestro ejemplo las dos primeras opciones se considerarían correctas puesto que entran en nuestro contexto, sin embargo la última se considera un error puesto que no aparece en nuestro contexto. 
+
+Esto es word2vec, se entrena un algoritmo para realizar una predicción sobre si una palabra se encuentra proxima a otra en un contexto dado. 
+
+
+GLOVE 
+
+Glove no utiliza redes neuronales pero fue inventado al mismo tiempo. ¿Cómo funciona glove? del mismo modo que un sistema de recomendaciones.
+
+Imaginemos un sistema con 1000 usuarios y 100 películas. No todos los usuarios han visto todas las películas asi que deben seguir recibiendo recomendaciones. Para averiguar qué películas podemos recomendar a qué usuario podemos utilizar las puntuaciones otorgadas 
+por un usuario a una serie de películas que coinciden con otro usuario en algunas películas. 
+
+        películas   El NLP y mi madre       Una tarde con spacy        El regreso de nltk       Freeling al desnudo         Todo sobre Ruby
+
+PEPE    puntuacion          5                           9                       6                          7                        4
+
+ALICIA  puntuacion          5                           9                       6
+
+
+A raíz de estos datos podemos usar a PEPE para recomendar la película "Freeling al desnudo" a ALICIA puesto que ambos han puntuado películas con un ranking similar y a PEPE le ha gustado esta película, no haremos lo mismo sin embargo con "Todo sobre Ruby"
+puesto que PEPE y ALICIA parecen tener los mismos gustos y a PEPE no le gustó esa película. 
+
+¿Cómo aplicamos esto a NLP? Volviendo a nuestro anterior ejemplo tomamos de nuevo sartén y calculamos las distancias a las que se encuentran las palabras de dicho contexto:
+
+            Luis cogió una (sartén) para freir pechugas de pollo
+
+Si cogemos sartén y "una" podemos decir que hay uno de distancia entre ambas, pero si por el contrario miramos cogió hay dos de distancia por lo que indicaremos lo siguiente
+
+    sartén - una = 1/1
+
+    sartén - cogió = 1/2
+
+Por lo tanto estamos indicando nuestro ranking de similitud basado en la distancia entre palabras. 
+
+De vuelta al mundo practico el word embbdeings nos sirve para convertir un documento entero a vector también pero de una dimensionalidad mucho menor puesto que podemos elegir qué palabras formarán parte del word embbdeing. ¿Cómo es el proceso?
+
+
+DOC ---> lo dividimos en palabras individuales --> "EL", "perro", "bonito", "fue"... --> Convertimos en vectores cada palabra con word embbeddings --> vec1["EL"], vec2["perro"],vec3 ["bonito"],vec4["fue"]... --> cogemos la media para tener un vector mas simple
+del mismo tamaño. 
+
+IMPORTANTE: En esta aproximación estamos tomando de nuevo el bag of words como representación peusto que al eliminar palabras para reducir la dimensaionlidad ya no tenemos todas las palabras. 
+
+Otras cosas que se puede hacer son analogías puesto que al tener cada palabra como un vector podemos operar con ellas como si fueran números ejemplo:
+
+hombre es rey 
+
+mujer es reina 
+
+reina = rey - hombre + mujer 
+
+Estas analogías se pueden hacer con capitles, idiomas, etc. 
+
+¿Cómo funciona esto en un contexto de trabajo real?
+
+Como un componente de un sistema mayor: las redes neuronales. Ahora que podemos mapear el significado de palabras quizá por ejemplo no necesitemos anotar unos datos de entrenamiento si están dentro de un intervalo óptimo. Es un conocimiento 
+transferiod que puede usarse en tareas futuras del sistema. 
