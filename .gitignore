@@ -1,2 +1,9 @@
-no_subido
+documents_for_course/glove.6B.50d.txt
+documents_for_course/glove.6B.100d.txt
+documents_for_course/glove.6B.200d.txt
+documents_for_course/glove.6B.300d.txt
+documents_for_course/glove.6B.zip
+documents_for_course/GoogleNews-vectors-negative300.bin
+documents_for_course/GoogleNews-vectors-negative300.bin.gz
+vectores_palabras.csv
 .vs_code
