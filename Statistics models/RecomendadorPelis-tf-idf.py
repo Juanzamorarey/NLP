@@ -6,7 +6,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 
 
-peliculas = pd.read_csv("archive/tmdb_5000_movies.csv")
+peliculas = pd.read_csv("documents_for_course/tmdb_5000_movies.csv")
 
 columnas_a_utilizar = peliculas[['genres','original_title','keywords']]
 generos = peliculas.genres.unique()
@@ -98,3 +98,5 @@ def ejecutar_recomendacion(titulos,matriz_confusion):
 
 
 ejecutar_recomendacion(titulos,tfIdf)
+
+
